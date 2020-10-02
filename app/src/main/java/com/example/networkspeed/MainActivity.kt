@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 
@@ -14,11 +15,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val nc = cm.getNetworkCapabilities(cm.activeNetwork)
-        val downSpeed = nc.linkDownstreamBandwidthKbps
-        val upSpeed = nc.linkUpstreamBandwidthKbps
+        // Declaring Button from the layout file
+        val btn = findViewById<Button>(R.id.btn)
 
-        Toast.makeText(applicationContext,"Up Speed: $upSpeed kbps \nDown Speed: $downSpeed kbps",Toast.LENGTH_LONG).show()
+        // Action when the button id clicked
+        btn.setOnClickListener {
+
+            // Connectivity Manager
+            val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            // Network Capabilities of Active Network
+            val nc = cm.getNetworkCapabilities(cm.activeNetwork)
+
+            // DownSpeed in MBPS
+            val downSpeed = (nc.linkDownstreamBandwidthKbps)/1000
+
+            // UpSpeed  in MBPS
+            val upSpeed = (nc.linkUpstreamBandwidthKbps)/1000
+
+            // Toast to Display DownSpeed and UpSpeed
+            Toast.makeText(applicationContext,"Up Speed: $upSpeed Mbps \nDown Speed: $downSpeed Mbps",Toast.LENGTH_LONG).show()
+        }
     }
 }
